@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+import subprocess
 #import requests
 
 """
@@ -30,6 +32,8 @@ option = st.selectbox(
 
 
 def take_action(opt):
+    #lab_spinup_cmd = f'containerlab deploy -t {lab_file}'
+    #lab_cmd_temp = subprocess.Popen([lab_spinup_cmd], stdout= subprocess.PIPE)
     if opt == 'Use a pre-defined Lab':
         lab_option = st.selectbox(
         'Which lab would you like to use?', ('OSPF Lab', 'BGP Lab', 'Failover Lab'))
