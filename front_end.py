@@ -36,8 +36,11 @@ def take_action(opt):
     #lab_cmd_temp = subprocess.Popen([lab_spinup_cmd], stdout= subprocess.PIPE)
     if opt == 'Use a pre-defined Lab':
         lab_option = st.selectbox(
-        'Which lab would you like to use?', ('OSPF Lab', 'BGP Lab', 'Failover Lab'))
-        return opt
+        'Which lab would you like to use?', ('OSPF Lab', 'BGP Lab', 'Failover Lab', 'Arista Lab'))
+        if lab_option == 'Arista Lab':
+            temp = subprocess.run('containerlab deploy -t arista.labtest.yml', stdout=subprocess.PIPE, text=True, shell=True)
+            output = str(temp.communicate())
+            return output
     elif opt == 'Create a new custom Lab':
         lab_option = st.selectbox(
         'What Type of lab would you like to create?', ('Routing', 'Switching', 'Topology Map'))
@@ -48,10 +51,32 @@ def take_action(opt):
         return 'Please Select one Option'
 
 
-
-
-
 st.write('You have selected:', take_action(option))
+
+
+#user_selection = input('Enter your Oprtion: ')
+
+#def execute_clab_cmd(user_opt):
+#    # CLAB run command
+#    #cmd_up = 'containerlab deploy -t arista.labtest.yml'
+#    #cmd_down = 'containerlab destroy -t arista.labtest.yml --graceful'
+#    if user_opt == '1':
+#        temp = subprocess.run('containerlab deploy -t arista.labtest.yml', stdout=subprocess.PIPE, text=True, shell=True)
+#        output = str(temp.communicate())
+#        return output
+#    elif user_opt == '2':
+#        temp = subprocess.run('containerlab destroy -t arista.labtest.yml --graceful', stdout=subprocess.PIPE, text=True, shell=True)
+#        output = str(temp.communicate())
+#        return output
+#    else:
+#        return 'Error or Invalid option'
+
+#print(f'You Selected Option:  {user_selection}')
+
+#execute_clab_cmd(user_selection)
+
+
+
 
 
 
