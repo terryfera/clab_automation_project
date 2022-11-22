@@ -38,9 +38,9 @@ def take_action(opt):
         lab_option = st.selectbox(
         'Which lab would you like to use?', ('OSPF Lab', 'BGP Lab', 'Failover Lab', 'Arista Lab'))
         if lab_option == 'Arista Lab':
-            temp = subprocess.run('containerlab deploy -t arista.labtest.yml', stdout=subprocess.PIPE, text=True, shell=True)
-            output = str(temp.communicate())
-            return output
+            temp = subprocess.run('containerlab deploy -t arista.labtest.yml', text=True, shell=True)
+            #output = str(temp.communicate())
+            return opt
     elif opt == 'Create a new custom Lab':
         lab_option = st.selectbox(
         'What Type of lab would you like to create?', ('Routing', 'Switching', 'Topology Map'))
