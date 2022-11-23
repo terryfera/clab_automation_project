@@ -56,7 +56,7 @@ def take_action(opt):
 
 if st.button('Display Running Labs'):
     disp_run_lab = subprocess.run('containerlab inspect --all', stdout=subprocess.PIPE, text=True, shell=True)
-    st.write(disp_run_lab.stdout)
+    st.code(disp_run_lab.stdout)
 else:
     st.write('No Running Labs')
 
