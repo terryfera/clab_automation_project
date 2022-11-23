@@ -54,14 +54,18 @@ def take_action(opt):
         return 'Please Select one Option'
 
 
+
+
+st.write('You have selected:', take_action(option))
+
 if st.button('Display Running Labs'):
     disp_run_lab = subprocess.run('containerlab inspect --all', stdout=subprocess.PIPE, text=True, shell=True)
     st.code(disp_run_lab.stdout)
 else:
     st.write('No Running Labs')
 
-st.write('You have selected:', take_action(option))
 
+    
 
 #user_selection = input('Enter your Oprtion: ')
 
