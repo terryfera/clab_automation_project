@@ -41,7 +41,7 @@ def take_action(opt):
             temp = subprocess.run('containerlab deploy -t arista.labtest.yml', stdout=subprocess.PIPE, text=True, shell=True)
             output = temp.returncode
             if output == 0:
-                return f'Successfully Creating {lab_option}'
+                return f'Successfully Creating {lab_option}' # ADD BUTTON TO SHOW RUNNING LABS AND TO STOP RUNNING LABS
             elif output ==1:
                 return 'Lab Verification Error'
     elif opt == 'Create a new custom Lab':
@@ -53,6 +53,11 @@ def take_action(opt):
     else:
         return 'Please Select one Option'
 
+
+if st.button('Display Running Labs'):
+    disp_run_lab = subprocess.run('containerlab inspect --all', stdout=subprocess.PIPE, text=True, shell=True)
+else:
+    st.write('No Running Labs')
 
 st.write('You have selected:', take_action(option))
 
