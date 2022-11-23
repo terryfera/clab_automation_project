@@ -58,14 +58,14 @@ def take_action(opt):
 
 st.write('You have selected:', take_action(option))
 
-if st.button('Display Running Labs'):
+if st.button('Display Running Labs'): # FIX CONDITION TO DISPLAY PROPER MESSAGE WHEN NO LABS ARE RUNNING
     disp_run_lab = subprocess.run('containerlab inspect --all', stdout=subprocess.PIPE, text=True, shell=True)
     st.code(disp_run_lab.stdout)
 else:
     st.write('No Running Labs')
 
 
-    
+
 
 #user_selection = input('Enter your Oprtion: ')
 
