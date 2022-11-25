@@ -38,7 +38,7 @@ def take_action(opt):
         lab_option = st.selectbox(
         'Which lab would you like to use?', ('OSPF Lab', 'BGP Lab', 'Failover Lab', 'Arista Lab'))
         if lab_option == 'Arista Lab':
-            temp = subprocess.run('containerlab deploy -t arista.labtest.yml', stdout=subprocess.PIPE, text=True, shell=True)
+            temp = subprocess.run('sudo containerlab deploy -t arista.labtest.yml', stdout=subprocess.PIPE, text=True, shell=True)
             output = temp.returncode
             if output == 0:
                 return f'Successfully Creating {lab_option}' # ADD BUTTON TO SHOW RUNNING LABS AND TO STOP RUNNING LABS
@@ -59,7 +59,7 @@ def take_action(opt):
 st.write('You have selected:', take_action(option))
 
 if st.button('Display Running Labs'): # FIX CONDITION TO DISPLAY PROPER MESSAGE WHEN NO LABS ARE RUNNING
-    disp_run_lab = subprocess.run('containerlab inspect --all', stdout=subprocess.PIPE, text=True, shell=True)
+    disp_run_lab = subprocess.run('sudo containerlab inspect --all', stdout=subprocess.PIPE, text=True, shell=True)
     st.code(disp_run_lab.stdout)
 else:
     st.write('No Running Labs')
