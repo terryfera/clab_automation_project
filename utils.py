@@ -1,13 +1,41 @@
 import streamlit as st
 import subprocess
 import json
+from tinydb import TinyDB, Query
+
+db = TinyDB("labs.json")
+Labs = Query()
+
+def get_db_labs():
+    all_labs = db.all()
+    lab_list = []
+
+    for lab in all_labs:
+        lab_list.append(lab['name'])
+
+    return lab_list
+
+def db_add_lab():
+
+    return
+
+def db_update_lab():
+
+    return
+
+def db_del_lab():
+
+    return
+
+def search_lab_details(lab_name):
+    return db.search(Labs.name == lab_name)
 
 def load_lab(lab_option):
     if lab_option == 'Arista':
         return subprocess.run(['sudo', 'containerlab', 'deploy', '-t', 'arista.labtest.yml'], text=True, check=True, capture_output=True)
 
 def check_run(lab_option):
-    if lab_option == 'Arista':
+    if lab_option == 'Arista Lab':
         return subprocess.run(['sudo', 'containerlab', 'inspect', '-t', 'arista.labtest.yml'], text=True, check=True, capture_output=True)
 
 def destroy_lab(lab_option):
@@ -41,3 +69,30 @@ def running_lab_status(status):
         status_markdown = f"""<span style="color:red">{status}</span>"""
     
     return status_markdown
+
+
+def connect_to_device(dev_option):
+
+    hostname = dev_option
+    port = 22
+    user = 'arista'
+    passwd = 'arista'
+
+    try:
+        client = SSHClient()
+        client.load_system_host_keys()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(hostname, port=port, username=user, password=passwd)
+        while True:
+            try:
+                cmd = input(f'{hostname} - $> ')
+                if cmd == 'exit':
+                    break
+                stdin, stdout, stderr = client.exec_command(cmd)
+                return st.code(stdout)
+                print(stdout.read().decode())
+            except KeyboardInterrupt:
+                break
+        client.close()
+    except Exception as err:
+        print(std(err))

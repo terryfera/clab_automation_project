@@ -5,24 +5,12 @@ import utils
 db = TinyDB("labs.json")
 Labs = Query()
 
-def get_db_labs():
-    all_labs = db.all()
-    lab_list = []
-
-    for lab in all_labs:
-        lab_list.append(lab['name'])
-
-    return lab_list
-
-def search_lab_details(lab_name):
-    return db.search(Labs.name == lab_name)
-
 def load_page():
     st.title("Labs List")
 
     option = st.selectbox(
         'Currently installed labs',
-        get_db_labs()
+        utils.get_db_labs()
     )
 
     st.write("Select a lab to view it's details, or use the checkbox below to see all labs")
@@ -38,13 +26,14 @@ def load_page():
         for lab in lab_details:
             with st.container():
                 lab_table = f"""
-                | **Field** | Value |
+                |  |  |
                 | --- |--- |
                 | **Lab Name** | {lab['name']} |
                 | **Description** | {lab['description']} |
                 | **Author** | {lab['author']} |
                 | **Git Enabled** | {lab['git']} |
                 | **Local Folder** | {lab['localLabFolder']} |
+                | **Lab File** | {lab['labFile']} |
                 | **Git Repo** | {lab['gitRepo']} |
                 """
                 st.markdown(utils.format_md_table(), unsafe_allow_html=True)

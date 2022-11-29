@@ -1,21 +1,18 @@
 import streamlit as st
-from utils import load_lab, check_run, destroy_lab
+import utils
 import json
 import config
 from git import Repo
 import os
 from pathlib import Path
+from tinydb import TinyDB, Query
 
 
-def create_lab_list():
-    lab_file = open('labs.json')
-    labs_json = json.load(lab_file)
-    return [lab['name'] for lab in labs_json['Labs']]
 
 
 
 def lab_clone():
-    labs_parent_dir = config.labRoot
+    labs_parent_dir = config.appRoot + config.labRoot
     repo_dir = ''
     repo_path = Path(labs_parent_dir + repo_dir)
     repo_git = Path(labs_parent_dir + repo_dir + ".git")
@@ -34,7 +31,7 @@ def lab_clone():
 
 
 def load_page():
-    labs_list = create_lab_list()
+    labs_list = utils.get_db_labs()
     with st.form("load lab"):
         st.write("Lab loading form")
         option = st.selectbox(
@@ -43,8 +40,10 @@ def load_page():
         submitted = st.form_submit_button("Submit")
         if submitted:
             with st.spinner(text="Checking if lab is already running"):
-                lab_check = check_run(option)
-            if lab_check.returncode == 0 and lab_check.stdout == '':
+                lab_check = utils.check_run(option)
+            if lab_check is None:
+                st.write("Lab does not exist, you shouldn't see this")
+            elif lab_check.returncode == 0 and lab_check.stdout == '':
                 with st.spinner(text="Lab loading..."):
                     lab = load_lab(option)
                 st.success("Complete")

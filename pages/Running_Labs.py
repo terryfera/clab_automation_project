@@ -1,5 +1,9 @@
 import streamlit as st
 import utils
+from tinydb import TinyDB, Query
+
+db = TinyDB("labs.json")
+Labs = Query()
 
 if "load_state" not in st.session_state:
      st.session_state.load_state = False

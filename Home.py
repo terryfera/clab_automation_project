@@ -1,5 +1,7 @@
 import streamlit as st
 import config
+from tinydb import TinyDB, Query
+
 
 def load_homepage():
     st.markdown("""
