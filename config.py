@@ -1,5 +1,5 @@
 logLocation = "./logs/"
 logfile = "main.log"
 
-labRoot = "./labs"
+labRoot = "labs"
 appRoot = "/opt/clab_auto/"
