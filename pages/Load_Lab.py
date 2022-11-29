@@ -40,12 +40,15 @@ def load_page():
         submitted = st.form_submit_button("Submit")
         if submitted:
             with st.spinner(text="Checking if lab is already running"):
-                lab_check = utils.check_run(option)
+                lab_check = utils.clab_function("inspect", option)
             if lab_check is None:
                 st.write("Lab does not exist, you shouldn't see this")
+            elif lab_check is str:
+                st.write("Returned message:")
+                st.text(lab_check)
             elif lab_check.returncode == 0 and lab_check.stdout == '':
                 with st.spinner(text="Lab loading..."):
-                    lab = load_lab(option)
+                    lab = utils.clab_function("deploy", option)
                 st.success("Complete")
                 if lab.returncode == 0:
                     st.success('Lab loaded successfully!', icon="✅")
@@ -62,7 +65,7 @@ def load_page():
             elif lab_check.returncode == 0 and lab_check.stdout is not None:
                 st.warning('Lab is already running', icon="⚠️")
                 with st.expander("Running lab details"):
-                    st.code(lab_check.stdout)
+                    st.code(utils.clab_function("inspect", option).stdout)
             elif lab_check.returncode == 1:
                 st.error('Error checking if lab is running', icon="🚨")
 

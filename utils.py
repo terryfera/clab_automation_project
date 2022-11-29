@@ -2,6 +2,8 @@ import streamlit as st
 import subprocess
 import json
 from tinydb import TinyDB, Query
+import config
+from pathlib import Path
 
 db = TinyDB("labs.json")
 Labs = Query()
@@ -30,17 +32,15 @@ def db_del_lab():
 def search_lab_details(lab_name):
     return db.search(Labs.name == lab_name)
 
-def load_lab(lab_option):
-    if lab_option == 'Arista':
-        return subprocess.run(['sudo', 'containerlab', 'deploy', '-t', 'arista.labtest.yml'], text=True, check=True, capture_output=True)
-
-def check_run(lab_option):
-    if lab_option == 'Arista Lab':
-        return subprocess.run(['sudo', 'containerlab', 'inspect', '-t', 'arista.labtest.yml'], text=True, check=True, capture_output=True)
-
-def destroy_lab(lab_option):
-    if lab_option == 'Arista':
-        return subprocess.run(['sudo', 'containerlab', 'destroy', '-t', 'arista.labtest.yml'], text=True, check=True, capture_output=True)
+def clab_function(lab_function, lab_option):
+    lab_details = db.search(Labs.name == lab_option)[0]
+    labs_parent_dir = config.appRoot + config.labRoot
+    lab_full_path = f"{labs_parent_dir}/{lab_details['localLabFolder']}/{lab_details['labFile']}"
+    lab_path_check = Path(lab_full_path)
+    if lab_path_check.is_file():
+        return subprocess.run(['sudo', 'containerlab', lab_function, '-t', lab_full_path], text=True, check=True, capture_output=True)
+    else:
+        return lab_full_path
 
 def get_running_labs():
     output = subprocess.run(['sudo', 'containerlab', 'inspect', '--all', '-f', 'json'], text=True, check=True, capture_output=True)
