@@ -8,6 +8,7 @@ from pathlib import Path
 db = TinyDB("labs.json")
 Labs = Query()
 
+
 def get_db_labs():
     all_labs = db.all()
     lab_list = []
@@ -17,9 +18,8 @@ def get_db_labs():
 
     return lab_list
 
-def db_add_lab():
-
-    return
+def db_add_lab(lab_details):
+    return db.insert(lab_details)
 
 def db_update_lab():
 
@@ -31,6 +31,9 @@ def db_del_lab():
 
 def search_lab_details(lab_name):
     return db.search(Labs.name == lab_name)
+
+def all_lab_details():
+    return db.all()
 
 def clab_function(lab_function, lab_option):
     lab_details = db.search(Labs.name == lab_option)[0]
